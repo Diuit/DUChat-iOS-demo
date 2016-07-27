@@ -55,9 +55,11 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    end
    ```
 
-6. Type `open MyFirstChat.xcworkspace` to open the project.
+6. Execute `pod install` to install required frameworks.
 
-7. We have to set up App Id and App key in the first place. In `AppDelegate.swift`, import Diuit framework.
+7. Type `open MyFirstChat.xcworkspace` to open the project.
+
+8. We have to set up App Id and App key in the first place. In `AppDelegate.swift`, import Diuit framework.
 
    ```swift
    import DUMessaging
@@ -74,7 +76,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    }
    ```
 
-8. Now we need to authenticat your mobile device with the session token we just retrieved (`SESSION_A` and `SESSION_B`). In `ViewController.swift`,  your app's first default first scene, add following code in your `viewDidLoad()` method.
+9. Now we need to authenticat your mobile device with the session token we just retrieved (`SESSION_A` and `SESSION_B`). In `ViewController.swift`,  your app's first default first scene, add following code in your `viewDidLoad()` method.
 
    ```swift
    /*  ViewController.swift */
@@ -97,7 +99,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    }
    ```
 
-9. We'd also like to give users displya names, say `WebUser` and  `MobileUser`. This can be achived easily by modifying the meta data of current user. Modify above code a little bit:
+10. We'd also like to give users displya names, say `WebUser` and  `MobileUser`. This can be achived easily by modifying the meta data of current user. Modify above code a little bit:
 
    ```swift
    /*  ViewController.swift */
@@ -127,11 +129,11 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    }
    ```
 
-10. Run the app. `SESSION_B`'s user meta will be set up.
+11. Run the app. `SESSION_B`'s user meta will be set up.
 
-11. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
+12. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
 
-   ```swift
+```swift
    /*  ViewController.swift */
    import UIKit
    // 1. You have to import the framework too
@@ -157,13 +159,13 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
            }
        }
    }
-   ```
+```
 
 12. Run app again. Now both of our users have their own display names.
 
-13. Now we need to create our first chat roo before start. Append the creating method after `updateMeta`
+22. Now we need to create our first chat roo before start. Append the creating method after `updateMeta`
 
-   ```swift
+```swift
    DUMessaging.authWithSessionToken("SESSION_A") { error, result in
                guard error == nil else {
                    print("error:\(error!.localizedDescription)")
@@ -181,11 +183,11 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
                    print("Successfully created chat #\(chat!.id)")
                }
            }
-   ```
+```
 
 14. Run app again, and you should see the **chat id** of newly created chat room in the debug console. Record this chat id for later usage.
 
-15. There will be only one direct chat room between two users. Therefore no matter how many times you call `createDirectChatRoomWith`, you will always get the same chat id.
+24. There will be only one direct chat room between two users. Therefore no matter how many times you call `createDirectChatRoomWith`, you will always get the same chat id.
 
 
 ### Build Basic UI & Send Messages
