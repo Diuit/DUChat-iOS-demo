@@ -28,7 +28,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 1. Before we start coding in Xcode, we need two session tokens which are registered by two different user serials. You can jump to step 4. if you know how to do it.
 2. Use our deploy button to build a server of your own. (If you don't know how to fill the form, please check [here](https://github.com/Diuit/DUChatServerDemo#configurations))
    [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Diuit/DUChatServerDemo)
-3. Visit `https://APP_NAME.herokuapp.com` (not `APP_NAME` is your app name deployed on Heroku), retrieve two session tokens by signing up with two different username(email). Let's name they `SESSION_A` , `SESSION_B` with user serial `USER_A` and `USER_B`.
+3. Visit `https://APP_NAME.herokuapp.com/getSessions.html` (note that `APP_NAME` is your app name deployed on Heroku), retrieve two session tokens by signing up with two different username(email). Let's name they `SESSION_A` , `SESSION_B` with user serial `USER_A` and `USER_B`.
    ![signup](http://i.imgur.com/8RVBKLH.png)
 4. Keep these two tokens for later.
 
@@ -101,7 +101,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 
 10. We'd also like to give users displya names, say `WebUser` and  `MobileUser`. This can be achived easily by modifying the meta data of current user. Modify above code a little bit:
 
-   ```swift
+```swift
    /*  ViewController.swift */
    import UIKit
    // 1. You have to import the framework too
@@ -127,11 +127,11 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
            }
        }
    }
-   ```
+```
 
 11. Run the app. `SESSION_B`'s user meta will be set up.
 
-12. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
+21. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
 
 ```swift
    /*  ViewController.swift */
