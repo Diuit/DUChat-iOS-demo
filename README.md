@@ -230,7 +230,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
        if message.senderUser!.serial == DUMessaging.currentUser!.serial {
            senderTitle = "[Me] : "
        } else {
-           senderTitle = "[\(message.senderUser!.meta!["name"])] : "
+           senderTitle = "[\(message.senderUser!.meta!["name"]!)] : "
        }
 
        return senderTitle + message.data! + "\n"
@@ -322,7 +322,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    ​
 
 2. Run the app, now you should see the old messages you just sent.
-   ![historical messages](http://i.imgur.com/xMBX34p.png) 
+   ![historical messages](http://i.imgur.com/xMBX34p.png)
 
 
 
