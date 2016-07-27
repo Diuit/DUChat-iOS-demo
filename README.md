@@ -27,7 +27,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 
 1. Before we start coding in Xcode, we need two session tokens which are registered by two different user serials. You can jump to step 4. if you know how to do it.
 2. Use our deploy button to build a server of your own. (If you don't know how to fill the form, please check [here](https://github.com/Diuit/DUChatServerDemo#configurations))
-   [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+   [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Diuit/DUChatServerDemo)
 3. Visit `https://APP_NAME.herokuapp.com` (not `APP_NAME` is your app name deployed on Heroku), retrieve two session tokens by signing up with two different username(email). Let's name they `SESSION_A` , `SESSION_B` with user serial `USER_A` and `USER_B`.
    ![signup](http://i.imgur.com/8RVBKLH.png)
 4. Keep these two tokens for later.
@@ -131,63 +131,62 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 
 11. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
 
-    ```swift
-    /*  ViewController.swift */
-    import UIKit
-    // 1. You have to import the framework too
-    import DUMessaging
+   ```swift
+   /*  ViewController.swift */
+   import UIKit
+   // 1. You have to import the framework too
+   import DUMessaging
 
-    class ViewController: UIViewController {
+   class ViewController: UIViewController {
 
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            // 2. This method will connect to Diuit API seriver and do the authentication
-            DUMessaging.authWithSessionToken("SESSION_A") { error, result in
-                guard error == nil else {
-                    print("error:\(error!.localizedDescription)")
-                    return
-                }
-                // 3. Update user's meta
-                DUMessaging.currentUser!.updateMeta(["name":"MobileUser"]) { error, user in
-                    guard error == nil else {
-                        // Handle error
-                        return
-                    }
-                }
-            }
-        }
-    }
-    ```
+       override func viewDidLoad() {
+           super.viewDidLoad()
+           // 2. This method will connect to Diuit API seriver and do the authentication
+           DUMessaging.authWithSessionToken("SESSION_A") { error, result in
+               guard error == nil else {
+                   print("error:\(error!.localizedDescription)")
+                   return
+               }
+               // 3. Update user's meta
+               DUMessaging.currentUser!.updateMeta(["name":"MobileUser"]) { error, user in
+                   guard error == nil else {
+                       // Handle error
+                       return
+                   }
+               }
+           }
+       }
+   }
+   ```
 
 12. Run app again. Now both of our users have their own display names.
 
 13. Now we need to create our first chat roo before start. Append the creating method after `updateMeta`
 
-    ```swift
-    DUMessaging.authWithSessionToken("SESSION_A") { error, result in
-                guard error == nil else {
-                    print("error:\(error!.localizedDescription)")
-                    return
-                }
-                // 3. Update user's meta
-                DUMessaging.currentUser!.updateMeta(["name":"DiuitMobileUser"]) { error, user in
-                    guard error == nil else {
-                        // Handle error
-                        return
-                    }
-                }
-                // 4. Create our first chat room
-                DUMessaging.createDirectChatRoomWith("USER_B", meta: ["name":"My First Chat"]) { error, chat in
-                    print("Successfully created chat #\(chat!.id)")
-                }
-            }
-    ```
+   ```swift
+   DUMessaging.authWithSessionToken("SESSION_A") { error, result in
+               guard error == nil else {
+                   print("error:\(error!.localizedDescription)")
+                   return
+               }
+               // 3. Update user's meta
+               DUMessaging.currentUser!.updateMeta(["name":"DiuitMobileUser"]) { error, user in
+                   guard error == nil else {
+                       // Handle error
+                       return
+                   }
+               }
+               // 4. Create our first chat room
+               DUMessaging.createDirectChatRoomWith("USER_B", meta: ["name":"My First Chat"]) { error, chat in
+                   print("Successfully created chat #\(chat!.id)")
+               }
+           }
+   ```
 
 14. Run app again, and you should see the **chat id** of newly created chat room in the debug console. Record this chat id for later usage.
 
 15. There will be only one direct chat room between two users. Therefore no matter how many times you call `createDirectChatRoomWith`, you will always get the same chat id.
 
-     
 
 ### Build Basic UI & Send Messages
 
