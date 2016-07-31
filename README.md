@@ -2,7 +2,7 @@
 
 
 
-In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed you how to build your own backend with integration of Diuit API server. This tutorial is going to show you how to integrate with an iOS app step by step.
+In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial, we showed you how to set up and launch your own backend server, integrate with Diuit API server, and get your session token. This tutorial will show you how to use [Diuit API](http://api.diuit.com) to build an iOS instant messaging app step by step.
 
 ## What we'll cover in this tutorial
 
@@ -17,7 +17,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 * Xcode 7.3+
 * Swift 2.2 (default version in Xcode 7.3)
 * [CocoaPods](https://cocoapods.org/)
-* A backend server with integration of Diuit API. If you don't have one, you can use deploy button to build one within a minute. For more detail, check this [tutorial](https://github.com/Diuit/DUChatServerDemo).
+* A backend server with integration of Diuit API. If you don't have one, you can use deploy button to build one within a minute. For more detail, check [the Part 1](https://github.com/Diuit/DUChatServerDemo) of this tutorial.
 
 
 
@@ -25,10 +25,10 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 
 ### Preparation
 
-1. Before we start coding in Xcode, we need two session tokens which are registered by two different user serials. You can jump to step 4. if you know how to do it.
-2. Use our deploy button to build a server of your own. (If you don't know how to fill the form, please check [here](https://github.com/Diuit/DUChatServerDemo#configurations))
+1. Before we start coding in Xcode, we need two session tokens that are registered by two different user serials. You can jump to step 4. if you know how to do it.
+2. Use the deploy button to build a server of your own. (If you don't know how to fill the form, please check [here](https://github.com/Diuit/DUChatServerDemo#configurations))
    [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Diuit/DUChatServerDemo)
-3. Visit `https://APP_NAME.herokuapp.com/getSessions.html` (note that `APP_NAME` is your app name deployed on Heroku), retrieve two session tokens by signing up with two different username(email). Let's name they `SESSION_A` , `SESSION_B` with user serial `USER_A` and `USER_B`.
+3. Visit `https://APP_NAME.herokuapp.com/getSessions.html` (note that `APP_NAME` is your app name on Heroku), retrieve two session tokens by signing up with two different username(email). Let's name them `SESSION_A` , `SESSION_B` with user serial `USER_A` and `USER_B`.
    ![signup](http://i.imgur.com/8RVBKLH.png)
 4. Keep these two tokens for later.
 
@@ -40,9 +40,9 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 
 2. Name it `MyFirstChat`
 
-3. **Close the project**. Open your terminal and enter the path of the project we just created.
+3. **Close the project**. Open your terminal application and navigate to the folder of the project we just created.
 
-4. Type `pod init` to generate a new file - `Podfile`, and then open it with any text editor. (You must have CocoaPods installed)
+4. In the terminal, type `pod init` to generate a new file - `Podfile`, and then open it with any text editor. (You must have CocoaPods installed)
 
 5. Edit the content of `Podfile` like following and save:
 
@@ -59,7 +59,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
 
 7. Type `open MyFirstChat.xcworkspace` to open the project.
 
-8. We have to set up App Id and App key in the first place. In `AppDelegate.swift`, import Diuit framework.
+8. We have to set up App ID and App key. In `AppDelegate.swift`, import Diuit framework.
 
    ```swift
    import DUMessaging
@@ -76,7 +76,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    }
    ```
 
-9. Now we need to authenticat your mobile device with the session token we just retrieved (`SESSION_A` and `SESSION_B`). In `ViewController.swift`,  your app's first default first scene, add following code in your `viewDidLoad()` method.
+9. Now we need to authenticate your mobile device with the session token we've retrieved (`SESSION_A` and `SESSION_B`). In `ViewController.swift`,  your app's first default first scene, add following code in your `viewDidLoad()` method.
 
    ```swift
    /*  ViewController.swift */
@@ -99,7 +99,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    }
    ```
 
-10. We'd also like to give users displya names, say `WebUser` and  `MobileUser`. This can be achived easily by modifying the meta data of current user. Modify above code a little bit:
+10. We'd also like to give users display names, say `WebUser` and  `MobileUser`. This can be achieved easily by modifying the meta data of current user. Modify above code a little bit:
 
 ```swift
    /*  ViewController.swift */
@@ -185,7 +185,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
            }
 ```
 
-14. Run app again, and you should see the **chat id** of newly created chat room in the debug console. Record this chat id for later usage.
+14. Run the app again, and you should see the **chat id** of newly created chat room in the debug console. Write down this chat id for later use.
 
 24. There will be only one direct chat room between two users. Therefore no matter how many times you call `createDirectChatRoomWith`, you will always get the same chat id.
 
@@ -260,7 +260,7 @@ In out tutorial [part 1](https://github.com/Diuit/DUChatServerDemo), we showed y
    }
    ```
 
-7. We are ready to send out messages now. To check the message is really sent out, we've already build a web page to communicate with your iOS app. Type `https://APP_NAME.herokusapp.com/webchat.html` in your browser, the page will need you to fill in session token and chat id. Fill `SESSION_B` and the chat id we just recorded, and then press `ENTER`.
+7. We are ready to send out messages now. To check whether the message is being sent out, we've built a web page to communicate with your iOS app. Type `https://APP_NAME.herokusapp.com/webchat.html` in your browser, the page will need you to fill in session token and chat id. Fill `SESSION_B` and the chat id we just recorded, and then press `ENTER`.
    ![webchat](http://i.imgur.com/RFilXW4.png)
 
 8. Type any text you want in iOS simulator and click `Send`. You can check the web page if the messages are delivered.
