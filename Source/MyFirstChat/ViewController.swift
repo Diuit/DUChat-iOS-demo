@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // 2. This method will connect to Diuit API seriver and do the authentication
-        DUMessaging.authWithSessionToken("SESSION_A") { error, result in
+        DUMessaging.auth(withSessionToken: "SESSION_A") { error, result in
             guard error == nil else {
                 // Handle error
                 print(error!.localizedDescription)
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
             }
             
             // 3. Update user's meta
-            DUMessaging.currentUser!.updateMeta(["name":"MobileUser"]) { error, user in
+            DUMessaging.currentUser!.update(meta: ["name":"MobileUser" as AnyObject]) { error, user in
                 guard error == nil else {
                     // Handle error
                     return
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
             }
             
             // 4. Create our first chat room
-            DUMessaging.createDirectChatRoomWith("USER_B", meta: ["name":"My First Chat"]) { error, chat in
+            DUMessaging.createDirectChatRoom(withUserSerial: "USER_B", meta: ["name":"My First Chat" as AnyObject]) { error, chat in
                 print("Successfully created chat #\(chat!.id)")
                 // 7. List last 20 messages
                 chat!.listMessages() { [unowned self] error, messages in
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         messagesTextView.text = ""
         
         // 6. To receive incoming messages from all chat rooms
-        NSNotificationCenter.defaultCenter().addObserverForName("messageReceived", object: nil, queue: NSOperationQueue.mainQueue()) { [unowned self] notif in
+        NotificationCenter.default.addObserver(forName: .didReceiveAnyMessage, object: nil, queue: OperationQueue.main) { [unowned self] notif in
             // get DUMessage object
             let message = notif.userInfo!["message"] as! DUMessage
             // format message text and print it out
@@ -67,11 +67,11 @@ class ViewController: UIViewController {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     
-    func formatedMessageTextOf(message: DUMessage) -> String? {
+    func formatedMessageTextOf(_ message: DUMessage) -> String? {
         // // Do not print system message
         guard message.senderUser != nil else {
             return nil
@@ -87,7 +87,7 @@ class ViewController: UIViewController {
         return senderTitle + message.data! + "\n"
     }
     
-    @IBAction func sendMessage(sender: UIButton) {
+    @IBAction func sendMessage(_ sender: UIButton) {
         // only send when there's input
         guard messageInputTextField.text != "" else {
             return
@@ -97,7 +97,7 @@ class ViewController: UIViewController {
         // clear textField
         messageInputTextField!.text = ""
         // This method sends out text message
-        DUMessaging.sendDirectText(toUser: "USER_B", text: messageText, beforeSend: nil) { [unowned self] error, message in
+        DUMessaging.sendDirectText(toUserSerial: "USER_B", withText: messageText, beforeSend: nil) { [unowned self] error, message in
             let newMesage = self.formatedMessageTextOf(message!)
             if newMesage != nil {
                 self.messagesTextView.text = self.messagesTextView.text + newMesage!

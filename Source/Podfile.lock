@@ -1,15 +1,15 @@
 PODS:
-  - DUMessaging (1.1.6):
-    - Socket.IO-Client-Swift (~> 6.1.0)
-  - Socket.IO-Client-Swift (6.1.5)
+  - DUMessaging (2.0.1):
+    - Socket.IO-Client-Swift
+  - Socket.IO-Client-Swift (8.0.2)
 
 DEPENDENCIES:
   - DUMessaging
 
 SPEC CHECKSUMS:
-  DUMessaging: f82b08a6e3fe38c4055cc1c1729cdd74a0966f46
-  Socket.IO-Client-Swift: 5141e781303bab379bd2ef6b2f59b5a9183aeb16
+  DUMessaging: cc32b42a7becd53458de501b585f9712161c12f9
+  Socket.IO-Client-Swift: 136598e4a81a42b0e6855e7f94a0e5a6efdc5ff8
 
-PODFILE CHECKSUM: 7306cf1ea7be6afe8c042610385cfd2d03a859b1
+PODFILE CHECKSUM: a482d2a269d008e57f475dda2b174a4010113a08
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.2
