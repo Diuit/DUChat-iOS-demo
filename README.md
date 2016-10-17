@@ -14,8 +14,8 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 
 ## Requirements
 
-* Xcode 7.3+
-* Swift 2.2 (default version in Xcode 7.3)
+* Xcode 8
+* Swift 3
 * [CocoaPods](https://cocoapods.org/)
 * A backend server with integration of Diuit API. If you don't have one, you can use deploy button to build one within a minute. For more detail, check [the Part 1](https://github.com/Diuit/DUChatServerDemo) of this tutorial.
 
@@ -53,6 +53,14 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
      use_frameworks!
      pod 'DUMessaging'
    end
+
+   post_install do |installer|
+     installer.pods_project.targets.each do |target|
+       target.build_configurations.each do |config|
+         config.build_settings['SWIFT_VERSION'] = '3.0'
+       end
+     end
+   end
    ```
 
 6. Execute `pod install` to install required frameworks.
@@ -68,12 +76,10 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
    And then call the setter (You can get your app key and id [here](https://developer.diuit.com/dashboard))
 
    ```swift
-   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-   	// Add following method
-       DUMessaging.set(appId: "YOUR_APP_ID", appKey: "YOUR_APP_KEY")
-
-       return true
-   }
+       func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+           DUMessaging.set(appId: "YOUR_APP_ID", appKey: "YOUR_APP_KEY")
+           return true
+       }
    ```
 
 9. Now we need to authenticate your mobile device with the session token we've retrieved (`SESSION_A` and `SESSION_B`). In `ViewController.swift`,  your app's first default first scene, add following code in your `viewDidLoad()` method.
@@ -89,7 +95,7 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
        override func viewDidLoad() {
            super.viewDidLoad()
            // 2. This method will connect to Diuit API seriver and do the authentication
-           DUMessaging.authWithSessionToken("SESSION_B") { error, result in
+           DUMessaging.auth(withSessionToken: "SESSION_B") { error, result in
                guard error == nil else {
                    // Error handle
                    return
@@ -112,13 +118,13 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
        override func viewDidLoad() {
            super.viewDidLoad()
            // 2. This method will connect to Diuit API seriver and do the authentication
-           DUMessaging.authWithSessionToken("SESSION_B") { error, result in
+           DUMessaging.auth(withSessionToken: "SESSION_B") { error, result in
                guard error == nil else {
                    print("error:\(error!.localizedDescription)")
                    return
                }
                // 3. Update user's meta
-               DUMessaging.currentUser!.updateMeta(["name":"WebUser"]) { error, user in
+               DUMessaging.currentUser!.update(meta: ["name":"WebUser" as AnyObject]) { error, user in
                    guard error == nil else {
                        // Handle error
                        return
@@ -131,7 +137,7 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 
 11. Run the app. `SESSION_B`'s user meta will be set up.
 
-21. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
+12. Now we replace `SESSION_B` with `SESION_A`, and so deos the meta.
 
 ```swift
    /*  ViewController.swift */
@@ -144,13 +150,13 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
        override func viewDidLoad() {
            super.viewDidLoad()
            // 2. This method will connect to Diuit API seriver and do the authentication
-           DUMessaging.authWithSessionToken("SESSION_A") { error, result in
+           DUMessaging.auth(withSessionToken: "SESSION_A") { error, result in
                guard error == nil else {
                    print("error:\(error!.localizedDescription)")
                    return
                }
                // 3. Update user's meta
-               DUMessaging.currentUser!.updateMeta(["name":"MobileUser"]) { error, user in
+               DUMessaging.currentUser!.update(meta: ["name":"MobileUser" as AnyObject]) { error, user in
                    guard error == nil else {
                        // Handle error
                        return
@@ -163,23 +169,23 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 
 12. Run app again. Now both of our users have their own display names.
 
-22. Now we need to create our first chat roo before start. Append the creating method after `updateMeta`
+13. Now we need to create our first chat roo before start. Append the creating method after `updateMeta`
 
 ```swift
-   DUMessaging.authWithSessionToken("SESSION_A") { error, result in
+   DUMessaging.auth(withSessionToken: "SESSION_A") { error, result in
                guard error == nil else {
                    print("error:\(error!.localizedDescription)")
                    return
                }
                // 3. Update user's meta
-               DUMessaging.currentUser!.updateMeta(["name":"DiuitMobileUser"]) { error, user in
+               DUMessaging.currentUser!.update(meta: ["name":"DiuitMobileUser" as AnyObject]) { error, user in
                    guard error == nil else {
                        // Handle error
                        return
                    }
                }
                // 4. Create our first chat room
-               DUMessaging.createDirectChatRoomWith("USER_B", meta: ["name":"My First Chat"]) { error, chat in
+               DUMessaging.createDirectChatRoom(withUserSerial: "USER_B", meta: ["name":"My First Chat" as AnyObject]) { error, chat in
                    print("Successfully created chat #\(chat!.id)")
                }
            }
@@ -187,7 +193,7 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 
 14. Run the app again, and you should see the **chat id** of newly created chat room in the debug console. Write down this chat id for later use.
 
-24. There will be only one direct chat room between two users. Therefore no matter how many times you call `createDirectChatRoomWith`, you will always get the same chat id.
+15. There will be only one direct chat room between two users. Therefore no matter how many times you call `createDirectChatRoom`, you will always get the same chat id.
 
 
 ### Build Basic UI & Send Messages
@@ -242,7 +248,7 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 6. Add action for send button and link to send button
 
    ```swift
-   @IBAction func sendMessage(sender: UIButton) {
+   @IBAction func sendMessage(_ sender: UIButton) {
        // only send when there's input
        guard messageInputTextField.text != "" else {
            return
@@ -251,7 +257,7 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
        // clear textField
        messageInputTextField!.text = ""
        // This method sends out text message
-       DUMessaging.sendDirectText(toUser: "USER_B", text: messageText, beforeSend: nil) { [unowned self] error, message in
+       DUMessaging.sendDirectText(toUserSerial: "USER_B", withText: messageText, beforeSend: nil) { [unowned self] error, message in
            let newMesage = self.formatedMessageTextOf(message!)
            if newMesage != nil {
                self.messagesTextView.text = self.messagesTextView.text + newMesage!
@@ -270,11 +276,11 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 
 ### Receiving Messages
 
-1. We use NSNotification to notify of new incoming messages. Add observer in `viewDidLoad()`:
+1. We use `Notification` to notify of new incoming messages. Add observer in `viewDidLoad()`:
 
    ```swift
    // 6. To receive incoming messages from all chat rooms
-   NSNotificationCenter.defaultCenter().addObserverForName("messageReceived", object: nil, queue: NSOperationQueue.mainQueue()) { [unowned self] notif in
+   NotificationCenter.default.addObserver(forName: .didReceiveAnyMessage, object: nil, queue: OperationQueue.main) { [unowned self] notif in
        // get DUMessage object
        let message = notif.userInfo!["message"] as! DUMessage
        // format message text and print it out
@@ -285,11 +291,11 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
    }
    ```
 
-2. You need to remove NSNotification observer when the ViewController is deallocated.
+2. You need to remove Notification observer when the ViewController is deallocated.
 
    ```swift
    deinit {
-       NSNotificationCenter.defaultCenter().removeObserver(self)
+       NotificationCenter.defaultCenter().removeObserver(self)
    }
    ```
 
@@ -305,7 +311,7 @@ In the [first part](https://github.com/Diuit/DUChatServerDemo) of this tutorial,
 
    ```swift
    // 4. Create our first chat room
-   DUMessaging.createDirectChatRoomWith("pofattseng@diuit.com", meta: ["name":"My First Chat"]) { error, chat in
+   DUMessaging.createDirectChatRoom(withUserSerial: "pofattseng@diuit.com", meta: ["name":"My First Chat" as AnyObject]) { error, chat in
        print("Successfully created chat #\(chat!.id)")
        // 7. List last 20 messages
        chat!.listMessages() { [unowned self] error, messages in
